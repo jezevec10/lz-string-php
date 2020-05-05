@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: sics
@@ -12,11 +13,11 @@ namespace LZCompressor;
 class LZUtil
 {
     /**
-    * @var string
-    */
+     * @var string
+     */
     public static $keyStrBase64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
     public static $keyStrUriSafe = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-$";
-    private static $baseReverseDic = array();
+    private static $baseReverseDic = [];
 
     /**
      * @param string $alphabet
@@ -25,10 +26,10 @@ class LZUtil
      */
     public static function getBaseValue($alphabet, $character)
     {
-        if(!array_key_exists($alphabet, self::$baseReverseDic)) {
-            self::$baseReverseDic[$alphabet] = array();
-            for($i=0; $i<strlen($alphabet); $i++) {
-                self::$baseReverseDic[$alphabet][$alphabet{$i}] = $i;
+        if (!array_key_exists($alphabet, self::$baseReverseDic)) {
+            self::$baseReverseDic[$alphabet] = [];
+            for ($i = 0; $i < strlen($alphabet); $i++) {
+                self::$baseReverseDic[$alphabet][$alphabet[$i]] = $i;
             }
         }
         return self::$baseReverseDic[$alphabet][$character];
@@ -62,7 +63,7 @@ class LZUtil
      *
      * @return bool|integer
      */
-    public static function charCodeAt($str, $num=0)
+    public static function charCodeAt($str, $num = 0)
     {
         return self::utf8_ord(self::utf8_charAt($str, $num));
     }
@@ -79,13 +80,13 @@ class LZUtil
         if ($len <= 0) {
             return -1;
         }
-        $h = ord($ch{0});
+        $h = ord($ch[0]);
         if ($h <= 0x7F) return $h;
         if ($h < 0xC2) return -3;
-        if ($h <= 0xDF && $len > 1) return ($h & 0x1F) << 6 | (ord($ch{1}) & 0x3F);
-        if ($h <= 0xEF && $len > 2) return ($h & 0x0F) << 12 | (ord($ch{1}) & 0x3F) << 6 | (ord($ch{2}) & 0x3F);
+        if ($h <= 0xDF && $len > 1) return ($h & 0x1F) << 6 | (ord($ch[1]) & 0x3F);
+        if ($h <= 0xEF && $len > 2) return ($h & 0x0F) << 12 | (ord($ch[1]) & 0x3F) << 6 | (ord($ch[2]) & 0x3F);
         if ($h <= 0xF4 && $len > 3)
-            return ($h & 0x0F) << 18 | (ord($ch{1}) & 0x3F) << 12 | (ord($ch{2}) & 0x3F) << 6 | (ord($ch{3}) & 0x3F);
+            return ($h & 0x0F) << 18 | (ord($ch[1]) & 0x3F) << 12 | (ord($ch[2]) & 0x3F) << 6 | (ord($ch[3]) & 0x3F);
         return -2;
     }
 
@@ -104,7 +105,8 @@ class LZUtil
      * @param string $str
      * @return integer
      */
-    public static function utf8_strlen($str) {
+    public static function utf8_strlen($str)
+    {
         return mb_strlen($str, 'UTF-8');
     }
 }
